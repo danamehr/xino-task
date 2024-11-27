@@ -1,13 +1,13 @@
 <?php
 
-namespace Database\Factories;
+namespace App\Modules\User\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Modules\User\Models\User>
  */
 class UserFactory extends Factory
 {
@@ -29,6 +29,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'plan_id' => null,
+            'plan_expires_at' => null,
         ];
     }
 

@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\User\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Modules\Subscription\Models\Traits\BelongsToPlan;
+use App\Modules\User\Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,8 +12,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens;
+    /** @use HasFactory<\App\Modules\User\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable, HasApiTokens, BelongsToPlan;
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +24,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'plan_id',
+        'plan_expires_at',
     ];
 
     /**
@@ -42,8 +46,14 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'plan_expires_at' => 'datetime',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function newFactory()
+    {
+        return UserFactory::new();
     }
 }
