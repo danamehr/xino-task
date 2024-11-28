@@ -12,6 +12,8 @@ class Section extends Model
 
     protected $guarded = [];
 
+    public $timestamps = false;
+
     protected static function newFactory()
     {
         return SectionFactory::new();

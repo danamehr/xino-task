@@ -20,7 +20,7 @@ class SectionFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->title(),
+            'title' => $this->faker->words(2, true),
             'slug' => $this->faker->unique()->slug(3),
             'required_level' => rand(1, 3),
             'description' => null,
