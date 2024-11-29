@@ -2,7 +2,9 @@
 
 namespace App\Modules\Subscription\Providers;
 
+use App\Modules\Subscription\Models\Plan;
 use App\Modules\Subscription\Models\Section;
+use App\Modules\Subscription\Policies\PlanPolicy;
 use App\Modules\Subscription\Policies\SectionPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -29,5 +31,6 @@ class SubscriptionServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'subscription');
 
         Gate::policy(Section::class, SectionPolicy::class);
+        Gate::policy(Plan::class, PlanPolicy::class);
     }
 }
