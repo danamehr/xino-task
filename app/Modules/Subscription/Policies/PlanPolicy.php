@@ -20,7 +20,7 @@ class PlanPolicy
     public function subscribe(User $user, Plan $plan): Response
     {
         if ($plan->status == PlanStatus::InActive->value) {
-            Response::denyAsNotFound(__('subscription::messages.plan_not_found'));
+            return Response::denyAsNotFound(__('subscription::messages.plan_not_found'));
         }
 
         // Based on the product's business logic, we can consider different scenarios for users subscription, like letting
@@ -34,7 +34,7 @@ class PlanPolicy
     public function renewPlan(User $user, Plan $plan): Response
     {
         if ($plan->status == PlanStatus::InActive->value) {
-            Response::denyAsNotFound(__('subscription::messages.plan_not_found'));
+            return Response::denyAsNotFound(__('subscription::messages.plan_not_found'));
         }
 
         return $user->plan_id === $plan->id && $user->plan_expires_at
