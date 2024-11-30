@@ -9,6 +9,8 @@ use App\Modules\Payment\Enums\PaymentStatus;
 use App\Modules\Payment\Exceptions\InvalidPaymentException;
 use App\Modules\Payment\Exceptions\UnsuccessfulPaymentException;
 use App\Modules\Payment\Services\PaymentServiceInterface;
+use App\Modules\Subscription\Events\SubscriptionActivatedEvent;
+use App\Modules\Subscription\Events\SubscriptionRenewedEvent;
 use App\Modules\Subscription\Models\Plan;
 use App\Modules\User\Models\User;
 use Illuminate\Support\Collection;
@@ -59,7 +61,9 @@ class PlanService implements PlanServiceInterface
             ]);
         });
 
+        // We can listen for the event to send a notification to the user.
         $user->refresh();
+        event(new SubscriptionActivatedEvent($user));
 
         return $user;
     }
@@ -93,6 +97,10 @@ class PlanService implements PlanServiceInterface
                     : now()->addDays($invoiceDto->durationDays),
             ]);
         });
+
+        // We can listen for the event to send a notification to the user.
+        $user->refresh();
+        event(new SubscriptionRenewedEvent($user));
 
         return true;
     }
