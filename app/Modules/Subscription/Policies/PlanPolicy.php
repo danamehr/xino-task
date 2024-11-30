@@ -30,4 +30,15 @@ class PlanPolicy
             ? Response::allow()
             : Response::deny(__('subscription::messages.already_subscribed'));
     }
+
+    public function renewPlan(User $user, Plan $plan): Response
+    {
+        if ($plan->status == PlanStatus::InActive->value) {
+            Response::denyAsNotFound(__('subscription::messages.plan_not_found'));
+        }
+
+        return $user->plan_id === $plan->id && $user->plan_expires_at
+            ? Response::allow()
+            : Response::deny(__('subscription::messages.not_subscribed_to_the_plan'));
+    }
 }

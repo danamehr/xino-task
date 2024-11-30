@@ -11,4 +11,6 @@ interface PlanServiceInterface
     public function getPlans(): Collection;
 
     public function subscribe(User $user, Plan $plan): User;
+
+    public function renew(User $user, Plan $plan): true;
 }
