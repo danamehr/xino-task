@@ -2,7 +2,7 @@
 
 namespace App\Modules\Subscription\Tests\Unit;
 
-use App\Jobs\CacheSectionsJob;
+use App\Modules\Subscription\Jobs\CacheSectionsJob;
 use App\Modules\Subscription\Models\Plan;
 use App\Modules\Subscription\Models\Section;
 use App\Modules\Subscription\Services\SectionServiceInterface;

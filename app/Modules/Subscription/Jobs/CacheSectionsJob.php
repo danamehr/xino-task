@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Modules\Subscription\Jobs;
 
 use App\Modules\Subscription\Models\Section;
 use Illuminate\Contracts\Queue\ShouldQueue;

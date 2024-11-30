@@ -2,7 +2,7 @@
 
 namespace App\Modules\Subscription\Services;
 
-use App\Jobs\CacheSectionsJob;
+use App\Modules\Subscription\Jobs\CacheSectionsJob;
 use App\Modules\Subscription\Models\Section;
 use App\Modules\User\Models\User;
 use Illuminate\Support\Collection;
