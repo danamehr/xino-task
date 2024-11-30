@@ -13,6 +13,7 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
             <directory>./app/Modules/Subscription/Tests/Feature</directory>
+            <directory>./app/Modules/Payment/Tests/Feature</directory>
         </testsuite>
     </testsuites>
     <source>

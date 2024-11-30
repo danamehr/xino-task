@@ -9,6 +9,7 @@ use App\Modules\Invoice\Models\Invoice;
 use App\Modules\Invoice\Services\InvoiceServiceInterface;
 use App\Modules\Payment\DTOs\PaymentVerificationDTO;
 use App\Modules\Payment\Enums\PaymentStatus;
+use App\Modules\Payment\Exceptions\InvalidPaymentException;
 use App\Modules\Payment\Exceptions\UnsuccessfulPaymentException;
 use App\Modules\Payment\Services\PaymentServiceInterface;
 use App\Modules\Subscription\Models\Plan;
@@ -130,6 +131,108 @@ class PlanTest extends TestCase
 
         $this->assertNull($this->user->plan_id);
         $this->assertNull($this->user->plan_expires_at);
+    }
+
+    public function test_plan_service_can_renew_user_subscription(): void
+    {
+        $this->user->update([
+            'plan_id' => $this->plan->id,
+            'plan_expires_at' => now()->addDays($this->plan->duration_days),
+        ]);
+
+        $this->travelTo(now()->addDays($this->plan->duration_days - 2));
+
+        $mockInvoiceService = Mockery::mock(InvoiceServiceInterface::class);
+        $mockInvoiceService
+            ->shouldReceive('makeInvoice')
+            ->once()
+            ->with($this->user, $this->plan, InvoiceType::Renewal)
+            ->andReturn($invoiceDto = new InvoiceDTO(
+                $this->user->id,
+                $this->plan->id,
+                InvoiceType::Renewal,
+                InvoiceStatus::UnPaid,
+                $this->plan->price,
+                $this->plan->duration_days,
+            ));
+
+        $mockInvoiceService
+            ->shouldReceive('createInvoice')
+            ->once()
+            ->with($invoiceDto)
+            ->andReturn(new Invoice());
+
+        $mockPaymentService = Mockery::mock(PaymentServiceInterface::class);
+        $mockPaymentService
+            ->shouldReceive('verifyPayment')
+            ->once()
+            ->with($invoiceDto)
+            ->andReturn(new PaymentVerificationDTO(
+                PaymentStatus::Successful,
+                str()->uuid(),
+            ));
+
+        app()->instance(PaymentServiceInterface::class, $mockPaymentService);
+        app()->instance(InvoiceServiceInterface::class, $mockInvoiceService);
+
+        /** @var PlanServiceInterface $planService */
+        $planService = app(PlanServiceInterface::class);
+
+        $this->assertTrue($planService->renew($this->user, $this->plan));
+
+        $this->user->refresh();
+        $this->assertEquals($this->plan->id, $this->user->plan_id);
+        $this->assertEquals(
+            now()->addDays($this->plan->duration_days + 2)->toDateString(),
+            $this->user->plan_expires_at->toDateString(),
+        );
+    }
+
+    public function test_plan_service_throws_exception_on_an_invalid_payment_when_trying_to_renew_user_subscription(): void
+    {
+        $this->user->update([
+            'plan_id' => $this->plan->id,
+            'plan_expires_at' => now()->addDays($this->plan->duration_days),
+        ]);
+
+        $this->travelTo(now()->addDays($this->plan->duration_days - 2));
+
+        $mockInvoiceService = Mockery::mock(InvoiceServiceInterface::class);
+        $mockInvoiceService
+            ->shouldReceive('makeInvoice')
+            ->once()
+            ->with($this->user, $this->plan, InvoiceType::Renewal)
+            ->andReturn($invoiceDto = new InvoiceDTO(
+                $this->user->id,
+                $this->plan->id,
+                InvoiceType::Renewal,
+                InvoiceStatus::UnPaid,
+                $this->plan->price,
+                $this->plan->duration_days,
+            ));
+
+        $mockInvoiceService
+            ->shouldNotReceive('createInvoice');
+
+        $mockPaymentService = Mockery::mock(PaymentServiceInterface::class);
+        $mockPaymentService
+            ->shouldReceive('verifyPayment')
+            ->once()
+            ->with($invoiceDto)
+            ->andReturn(new PaymentVerificationDTO(
+                PaymentStatus::Unsuccessful,
+            ));
+
+        app()->instance(PaymentServiceInterface::class, $mockPaymentService);
+        app()->instance(InvoiceServiceInterface::class, $mockInvoiceService);
+
+        /** @var PlanServiceInterface $planService */
+        $planService = app(PlanServiceInterface::class);
+
+        $this->assertThrows(
+            fn() => $planService->renew($this->user, $this->plan),
+            InvalidPaymentException::class,
+        );
     }
 
     public function test_plan_service_can_get_all_plans(): void
