@@ -10,6 +10,5 @@ class PaymentVerificationDTO
         public PaymentStatus $status,
         public ?string $transactionId = null,
         public ?string $message = null,
-    ) {
-    }
+    ) {}
 }

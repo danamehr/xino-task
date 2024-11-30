@@ -8,9 +8,7 @@ use App\Modules\Shared\Http\V1\Controllers\Controller;
 
 class InvoiceController extends Controller
 {
-    public function __construct(protected InvoiceServiceInterface $invoiceService)
-    {
-    }
+    public function __construct(protected InvoiceServiceInterface $invoiceService) {}
 
     public function index()
     {

@@ -18,6 +18,5 @@ class InvoiceDTO
         public ?string $reference = null,
         public ?Carbon $verifiedAt = null,
         public ?string $id = null,
-    ) {
-    }
+    ) {}
 }

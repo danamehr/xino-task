@@ -18,9 +18,9 @@ class SectionService implements SectionServiceInterface
 
         $sections = collect();
 
-        for ($i = 1; $i <= $user->plan->level ; $i++) {
+        for ($i = 1; $i <= $user->plan->level; $i++) {
             if (! $serializedSections = Cache::get("subscriptions.section-levels.{$i}")) {
-                dispatch(new CacheSectionsJob());
+                dispatch(new CacheSectionsJob);
 
                 return Section::query()->where('required_level', '<=', $user->plan->level)->get();
             }
@@ -45,7 +45,7 @@ class SectionService implements SectionServiceInterface
         // or from the admin panel, we'll need to regenerate the caches using its job immediately. So the following
         // lines do not get reached out in a normal situation, but still we handle it to prevent further issues.
 
-        dispatch(new CacheSectionsJob());
+        dispatch(new CacheSectionsJob);
 
         return $section;
     }

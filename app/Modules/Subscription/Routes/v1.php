@@ -10,5 +10,3 @@ Route::middleware(['api', 'auth:sanctum'])->prefix('v1/subscriptions')->name('v1
     Route::get('plans', [PlanController::class, 'index'])->name('plans.index');
     Route::post('plans/{plan}/subscribe', [PlanController::class, 'subscribe'])->name('plans.subscribe');
 });
-
-

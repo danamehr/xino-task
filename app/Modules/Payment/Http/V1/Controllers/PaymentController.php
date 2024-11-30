@@ -10,9 +10,7 @@ use App\Modules\User\Models\User;
 
 class PaymentController extends Controller
 {
-    public function __construct(protected PlanServiceInterface $planService)
-    {
-    }
+    public function __construct(protected PlanServiceInterface $planService) {}
 
     public function renewal(RenewalWebhookRequest $request)
     {

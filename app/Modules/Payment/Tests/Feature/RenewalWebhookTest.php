@@ -38,7 +38,7 @@ class RenewalWebhookTest extends TestCase
             'user_id' => $this->user->id,
             'plan_id' => $this->plan->id,
         ])
-        ->assertStatus(200);
+            ->assertStatus(200);
 
         $this->user->refresh();
         $this->assertEquals($this->plan->id, $this->user->plan_id);
@@ -54,7 +54,7 @@ class RenewalWebhookTest extends TestCase
             'user_id' => $this->user->id,
             'plan_id' => $this->plan->id,
         ])
-        ->assertStatus(403);
+            ->assertStatus(403);
     }
 
     public function test_renewal_webhook_fails_when_sending_invalid_fields(): void
@@ -63,11 +63,11 @@ class RenewalWebhookTest extends TestCase
             'user_id' => 320,
             'plan_id' => 135,
         ])
-        ->assertStatus(422);
+            ->assertStatus(422);
 
         $this->post(route('v1.payments.renewal-webhook'), [
             'user_id' => $this->user->id,
         ])
-        ->assertStatus(422);
+            ->assertStatus(422);
     }
 }
