@@ -2,7 +2,7 @@
 
 namespace App\Modules\Subscription\Http\V1\Controllers;
 
-use App\Modules\Shared\Http\V1\Controller;
+use App\Modules\Shared\Http\V1\Controllers\Controller;
 use App\Modules\Subscription\Http\V1\Resources\SectionResource;
 use App\Modules\Subscription\Models\Section;
 use App\Modules\Subscription\Services\SectionServiceInterface;
