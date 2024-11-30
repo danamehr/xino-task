@@ -60,7 +60,7 @@ class PlanTest extends TestCase
             ->shouldReceive('createInvoice')
             ->once()
             ->with($invoiceDto)
-            ->andReturn(new Invoice());
+            ->andReturn(new Invoice);
 
         $mockPaymentService = Mockery::mock(PaymentServiceInterface::class);
         $mockPaymentService
@@ -123,7 +123,7 @@ class PlanTest extends TestCase
         $planService = app(PlanServiceInterface::class);
 
         $this->assertThrows(
-            fn() => $planService->subscribe($this->user, $this->plan),
+            fn () => $planService->subscribe($this->user, $this->plan),
             UnsuccessfulPaymentException::class,
         );
 
@@ -160,7 +160,7 @@ class PlanTest extends TestCase
             ->shouldReceive('createInvoice')
             ->once()
             ->with($invoiceDto)
-            ->andReturn(new Invoice());
+            ->andReturn(new Invoice);
 
         $mockPaymentService = Mockery::mock(PaymentServiceInterface::class);
         $mockPaymentService
@@ -230,7 +230,7 @@ class PlanTest extends TestCase
         $planService = app(PlanServiceInterface::class);
 
         $this->assertThrows(
-            fn() => $planService->renew($this->user, $this->plan),
+            fn () => $planService->renew($this->user, $this->plan),
             InvalidPaymentException::class,
         );
     }

@@ -10,9 +10,7 @@ use App\Modules\User\Http\V1\Resources\UserResource;
 
 class PlanController extends Controller
 {
-    public function __construct(protected PlanServiceInterface $planService)
-    {
-    }
+    public function __construct(protected PlanServiceInterface $planService) {}
 
     public function index()
     {

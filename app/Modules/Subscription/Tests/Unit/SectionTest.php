@@ -59,7 +59,7 @@ class SectionTest extends TestCase
         $section = Section::factory()->create();
         $this->assertDatabaseHas(Section::class, ['slug' => $section->slug]);
 
-        $cacheSectionsJob = new CacheSectionsJob();
+        $cacheSectionsJob = new CacheSectionsJob;
         $cacheSectionsJob->handle();
         $this->assertTrue(Cache::has("subscriptions.sections.{$section->slug}"));
 
@@ -99,7 +99,7 @@ class SectionTest extends TestCase
         $this->assertFalse(Cache::has('subscriptions.section-levels.2'));
         $this->assertFalse(Cache::has('subscriptions.section-levels.3'));
 
-        $cacheSectionsJob = new CacheSectionsJob();
+        $cacheSectionsJob = new CacheSectionsJob;
         $cacheSectionsJob->handle();
         $this->assertTrue(Cache::has('subscriptions.section-levels.1'));
         $this->assertTrue(Cache::has('subscriptions.section-levels.2'));

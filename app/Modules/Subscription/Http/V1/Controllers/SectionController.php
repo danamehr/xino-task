@@ -9,9 +9,7 @@ use App\Modules\Subscription\Services\SectionServiceInterface;
 
 class SectionController extends Controller
 {
-    public function __construct(protected SectionServiceInterface $sectionService)
-    {
-    }
+    public function __construct(protected SectionServiceInterface $sectionService) {}
 
     public function index()
     {

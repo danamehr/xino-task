@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
-    use HasFactory, HasUlids, BelongsToUser, BelongsToPlan;
+    use BelongsToPlan, BelongsToUser, HasFactory, HasUlids;
 
     protected $keyType = 'string';
 

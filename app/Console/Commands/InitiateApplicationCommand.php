@@ -37,7 +37,7 @@ class InitiateApplicationCommand extends Command
         $this->info('Seeders ran successfully.');
 
         $this->line('Caching Sections...');
-        dispatch_sync(new CacheSectionsJob());
+        dispatch_sync(new CacheSectionsJob);
         $this->info('Sections cached successfully.');
 
         /** @var User $user */

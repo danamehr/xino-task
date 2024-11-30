@@ -19,7 +19,7 @@ class PaymentServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/v1.php');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/v1.php');
 
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'payment');
     }

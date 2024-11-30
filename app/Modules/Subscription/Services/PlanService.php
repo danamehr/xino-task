@@ -21,8 +21,7 @@ class PlanService implements PlanServiceInterface
     public function __construct(
         private PaymentServiceInterface $paymentService,
         private InvoiceServiceInterface $invoiceService,
-    ) {
-    }
+    ) {}
 
     public function getPlans(): Collection
     {
@@ -40,7 +39,7 @@ class PlanService implements PlanServiceInterface
 
         if ($paymentVerificationDto->status == PaymentStatus::Unsuccessful) {
             // We can also handle multiple exception types based on the PSP response code and message.
-            throw new UnsuccessfulPaymentException();
+            throw new UnsuccessfulPaymentException;
         }
 
         $invoiceDto->verifiedAt = now();
@@ -76,7 +75,7 @@ class PlanService implements PlanServiceInterface
 
         if ($paymentVerificationDto->status == PaymentStatus::Unsuccessful) {
             // We can also handle multiple exception types based on the PSP response code and message.
-            throw new InvalidPaymentException();
+            throw new InvalidPaymentException;
         }
 
         $invoiceDto->verifiedAt = now();
