@@ -30,13 +30,17 @@ This project is a modular Laravel application that implements a subscription sys
 ## Getting Started
 
 ### Prerequisites
-- Docker and Docker Compose installed on your system.
+- Docker installed on your system.
+- Docker Compose `v2.x` or higher installed on your system.
 
 ### Installation Steps
 1. Clone the repository:
    ```bash
-   git clone https://github.com/danamehr/xino-task.git
-   cd xino-task
+   git clone https://github.com/danamehr/xino-task.git && cd xino-task
+   ```
+2. Checkout to develop branch:
+   ```bash
+   git checkout origin/develop
    ```
 
 ### Docker Setup
@@ -45,39 +49,59 @@ This project is a modular Laravel application that implements a subscription sys
    cp .env.example .env
    ```
 
-2. Build and start the Docker containers:
+2. Change working directory to docker-compose.yml directory:
+   ```bash
+   cd deploy/composer
+   ```
+
+3. Build and start the Docker containers:
+   ```bash
+   docker compose up --build -d
+   ```
+    or
+    
    ```bash
    docker-compose up --build -d
    ```
 
-3. Install dependencies:
+4. Use the following command to see the names of your containers on your device:
    ```bash
-   docker exec -it xino-api-app composer install
+   docker ps
+   ```
+   
+5. Check the container name for `xino/api` image at the last column of the table. It should be something like `xino-api-app-1`. If it's different, copy and replace it with the `xino-api-app-1` in the following commands before running them.
+
+
+6. Install dependencies:
+   ```bash
+   docker exec -it xino-api-app-1 composer install
    ```
 
-4. Generate the application key:
+7. Generate the application key:
    ```bash
-   docker exec -it xino-api-app php artisan key:generate
+   docker exec -it xino-api-app-1 php artisan key:generate
    ```
 
-5. Run initiate application command:
+8. Run initiate application command:
    ```bash
-   docker exec -it xino-api-app php artisan app:init
+   docker exec -it xino-api-app-1 php artisan app:init
    ```
+
+9. Copy the access token provided by the `app:init` command, and go to the variables tab on the postman collection and replace it with the `token` field's value, then save the changes. 
 
 ---
 
 ## Running the Application
 
 ### Accessing the Application
-- The application will be accessible at `http://127.0.0.1`.
+- The application will be accessible at `http://127.0.0.1:8000`.
 
 ---
 
 ## API Documentation
 
 ### Base URL
-- `http://127.0.0.1/v1`
+- `http://127.0.0.1:8000/v1`
 
 ### Endpoints
 For detailed API testing, import the provided **Postman Collection** located at `./docs/Xino-Task.postman_collection.json`.
