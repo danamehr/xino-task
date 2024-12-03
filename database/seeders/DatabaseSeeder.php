@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Modules\Subscription\Enums\PlanStatus;
+use App\Modules\Subscription\Models\Plan;
+use App\Modules\Subscription\Models\Section;
+use App\Modules\User\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +16,42 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory()
+            ->create([
+                'email' => 'firstuser@gmail.com',
+            ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        Plan::factory()
+            ->create([
+                'name' => 'basic',
+                'level' => 1,
+                'status' => PlanStatus::Active->value,
+            ]);
+
+        Plan::factory()
+            ->create([
+                'name' => 'professional',
+                'level' => 2,
+                'status' => PlanStatus::Active->value,
+            ]);
+
+        Plan::factory()
+            ->create([
+                'name' => 'premium',
+                'level' => 3,
+                'status' => PlanStatus::Active->value,
+            ]);
+
+        Section::factory()
+            ->count(3)
+            ->create(['required_level' => 1]);
+
+        Section::factory()
+            ->count(3)
+            ->create(['required_level' => 2]);
+
+        Section::factory()
+            ->count(3)
+            ->create(['required_level' => 3]);
     }
 }
